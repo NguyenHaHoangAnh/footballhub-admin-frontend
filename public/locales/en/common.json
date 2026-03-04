@@ -1,0 +1,9 @@
+{
+    "button": {
+        "signIn": "Sign in",
+        "signUp": "Sign up",
+        "signPut": "Sign out",
+        "save": "Save",
+        "cancel": "Cancel"
+    }
+}

@@ -1,4 +1,4 @@
-// import { auth } from "@/lib/auth";
+import { getAccessToken } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function Layout({
@@ -6,11 +6,9 @@ export default async function Layout({
 }: {
     children: React.ReactNode;
 }) {
-    // const session = await auth();
-
-    // if (!session?.accessToken) {
-    //     redirect("/auth/sign-in");
-    // }
+    if (!getAccessToken()) {
+        redirect("/auth/sign-in");
+    }
 
     return (
         <>{children}</>

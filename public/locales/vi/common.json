@@ -1,0 +1,9 @@
+{
+    "button": {
+        "signIn": "Đăng nhập",
+        "signUp": "Đăng ký",
+        "signPut": "Đăng xuất",
+        "save": "Lưu",
+        "cancel": "Hủy"
+    }
+}

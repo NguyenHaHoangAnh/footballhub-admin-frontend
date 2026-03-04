@@ -1,0 +1,18 @@
+{
+    "title": "Đăng nhập",
+    "label": {
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu"
+    },
+    "error": {
+        "username": {
+            "minLength": "Tên đăng nhập ít nhất {{value}} ký tự",
+            "maxLength": "Tên đăng nhập nhiều nhất {{value}} ký tự"
+        },
+        "password": {
+            "minLength": "Mật khẩu có độ dài tối thiểu là {{value}}",
+            "maxLength": "Mật khẩu có độ dài tối đa là {{value}}"
+        },
+        "wrongUsernameOrPassword": "Tên đăng nhập hoặc mật khẩu không chính xác"
+    }
+}
