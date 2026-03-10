@@ -1,9 +1,10 @@
 import axios from "axios";
-import { clearAccessToken, getAccessToken, setAccessToken } from "./auth";
 import { refreshAccessToken } from "./api/auth";
+import { getSession } from "next-auth/react";
+import { signOut } from "./auth";
 
 const axiosInstanceBase = axios.create({
-    baseURL: process.env.BACKEND_BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
     headers: {
         "Content-Type": "application/json",
     },
@@ -29,10 +30,10 @@ axiosInstanceBase.interceptors.request.use(
     // Add accessToken to headers
     async (config) => {
         config.headers["Accept-Language"] = "vi";
-        const accessToken = getAccessToken();
+        const session = await getSession();
 
-        if (accessToken) {
-            config.headers["Authorization"] = `Bearer ${accessToken}`;
+        if (session?.accessToken) {
+            config.headers["Authorization"] = `Bearer ${session?.accessToken}`;
         }
 
         return config;
@@ -48,7 +49,6 @@ axiosInstanceBase.interceptors.response.use(
         // Nếu lỗi 401, 403 -> đăng xuất + redirect sang signin
         if ([401, 403].includes(error?.response?.status) && !config._retry) {
             if (config.url?.includes("/refresh")) {
-                clearAccessToken();
                 window.location.replace("/auth/sign-in");
                 return Promise.reject(error);
             }
@@ -77,7 +77,10 @@ axiosInstanceBase.interceptors.response.use(
                 const response = await refreshAccessToken();
                 const newAccessToken = response.data.accessToken;
 
-                setAccessToken(newAccessToken);
+                // Cập nhật lại next-auth session
+                const session = await getSession();
+                if (session) session.accessToken = newAccessToken;
+
                 processQueue(null, newAccessToken);
 
                 config.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -85,10 +88,9 @@ axiosInstanceBase.interceptors.response.use(
                 return axiosInstanceBase(config);
             } catch (error) {
                 processQueue(error, null);
-                clearAccessToken();
                 if (!isRedirecting) {
                     isRedirecting = true;
-                    window.location.replace("/auth/sign-in");
+                    signOut({ redirect: true, redirectTo: "/auth/sign-in" });
                 }
                 return Promise.reject(error);
             } finally {

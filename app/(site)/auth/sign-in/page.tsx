@@ -11,11 +11,10 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Eye, EyeClosed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query"
-import { signIn } from "@/lib/api/auth";
 import { SighInResponseDto } from "@/app/types/auth";
-import { setAccessToken } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 export default function SignIn() {
     const { t } = useTranslation(["common", "public/sign-in"]);
@@ -45,27 +44,18 @@ export default function SignIn() {
         },
     });
 
-    const signInApi = useMutation({
-        mutationKey: ["signIn"],
-        mutationFn: signIn,
-        onSuccess: (data: SighInResponseDto) => {
-            setAccessToken(data.accessToken);
-            setIsSubmitting(false);
+    const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
+        setIsSubmitting(true);
+        const res = await signIn("credentials", values);
+        if (!res?.error) {
             router.push("/dashboard");
-        },
-        onError: (error) => {
-            console.log("[signIn]", error);
-            setIsSubmitting(false);
+        } else {
             toast.error(t("public/sign-in:error.wrongUsernameOrPassword"), {
                 duration: 5000,
                 position: "top-center",
-            })
+            });
         }
-    });
-
-    const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
-        setIsSubmitting(true);
-        signInApi.mutate(values);
+        setIsSubmitting(false);
     }
 
     return (
@@ -107,6 +97,7 @@ export default function SignIn() {
                                                 type={showPassword ? "text" : "password"}
                                                 value={field.value}
                                                 onChange={field.onChange}
+                                                autoComplete="true"
                                             />
                                             <InputGroupAddon 
                                                 align="inline-end"
