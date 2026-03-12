@@ -25,12 +25,14 @@ const credential = CredentialsProvider({
                     id: user.info.userId,
                     info: user.info,
                     accessToken: user.accessToken,
+                    refreshToken: user.refreshToken,
+                    expiredAt: user.expiredAt,
                 };
             }
             return null;
         } catch (error) {
             console.error("Login error:", error);
-        return null;
+            return null;
         }
     },
 });

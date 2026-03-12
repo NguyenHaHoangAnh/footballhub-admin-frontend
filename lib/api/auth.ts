@@ -1,7 +1,7 @@
 import { SignInRequestDto, SignUpRequestDto } from "@/app/types/auth";
 import axiosInstanceAuth from "../axios-instance-auth";
 
-export async function signIn(payload: SignInRequestDto) {
+export async function logIn(payload: SignInRequestDto) {
     try {
         const response = await axiosInstanceAuth.post("/login", payload);
         
@@ -11,7 +11,7 @@ export async function signIn(payload: SignInRequestDto) {
     }
 }
 
-export async function signUp(payload: SignUpRequestDto) {
+export async function register(payload: SignUpRequestDto) {
     try {
         const response = await axiosInstanceAuth.post("/register", payload);
 
@@ -21,11 +21,9 @@ export async function signUp(payload: SignUpRequestDto) {
     }
 }
 
-export async function refreshAccessToken() {
+export async function refresh(payload: { refreshToken: string }) {
     try {
-        const response = await axiosInstanceAuth.post("/refresh", {
-            withCredentials: true,
-        });
+        const response = await axiosInstanceAuth.post("/refresh", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -33,11 +31,9 @@ export async function refreshAccessToken() {
     }
 }
 
-export async function signOut() {
+export async function logOut(payload: { refreshToken: string }) {
     try {
-        const response = await axiosInstanceAuth.post("/logout", {
-            withCredentials: true,
-        });
+        const response = await axiosInstanceAuth.post("/logout", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {

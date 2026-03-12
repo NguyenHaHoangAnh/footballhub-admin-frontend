@@ -10,8 +10,6 @@ import { useState } from "react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Eye, EyeClosed } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query"
-import { SighInResponseDto } from "@/app/types/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
@@ -46,16 +44,22 @@ export default function SignIn() {
 
     const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
         setIsSubmitting(true);
-        const res = await signIn("credentials", values);
-        if (!res?.error) {
-            router.push("/dashboard");
-        } else {
-            toast.error(t("public/sign-in:error.wrongUsernameOrPassword"), {
-                duration: 5000,
-                position: "top-center",
+        await signIn("credentials", {
+            ...values,
+            redirect: false,
+        })
+            .then(() => {
+                router.push("/dashboard");
+            })
+            .catch((error) => {
+                toast.error(t("public/sign-in:error.wrongUsernameOrPassword"), {
+                    duration: 5000,
+                    position: "top-center",
+                });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
-        }
-        setIsSubmitting(false);
     }
 
     return (

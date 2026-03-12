@@ -1,17 +1,21 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function Layout({
+import { SESSION_STATUS } from "@/lib/constant";
+import { handleSignOut } from "@/lib/log-out";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+
+export default function Layout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const session = await auth();
-    console.log("[accessToken]", session?.accessToken);
-    
-    if (!session?.accessToken) {
-        redirect("/auth/sign-in");
-    }
+    const { data: session, status } = useSession();
+    useEffect(() => {
+        if (status === SESSION_STATUS.AUTHENTICATED && !session?.accessToken) {
+            handleSignOut(session?.refreshToken);
+        }
+    }, [session, status]);
 
     return (
         <div className="mt-[70px]">
