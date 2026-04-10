@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
-import { handleSignOut } from "./log-out";
 
 const axiosInstanceBase = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
@@ -29,8 +28,7 @@ axiosInstanceBase.interceptors.response.use(
     async (error) => {
         // Nếu lỗi 401, 403 -> đăng xuất + redirect sang signin
         if ([401, 403].includes(error?.response?.status)) {
-            const session = await getSession();
-            await handleSignOut(session?.info?.userId);
+            await signOut({ redirect: true, redirectTo: "/auth/sign-in" });
         }
 
         return Promise.reject(error);

@@ -1,8 +1,8 @@
 "use client";
 
+import Sidebar from "@/components/Sidebar";
 import { SESSION_STATUS } from "@/lib/constant";
-import { handleSignOut } from "@/lib/log-out";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function Layout({
@@ -13,13 +13,14 @@ export default function Layout({
     const { data: session, status } = useSession();
     useEffect(() => {
         if (status === SESSION_STATUS.AUTHENTICATED && !session?.accessToken) {
-            handleSignOut(session?.refreshToken);
+            signOut({ redirect: true, redirectTo: "/auth/sign-in" });
         }
     }, [session, status]);
 
     return (
-        <div className="mt-[70px]">
-            <div>
+        <div className="mt-17.5 flex">
+            <Sidebar />
+            <div className="p-5 w-full">
                 {children}
             </div>
         </div>

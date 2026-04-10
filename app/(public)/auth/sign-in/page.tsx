@@ -44,22 +44,19 @@ export default function SignIn() {
 
     const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
         setIsSubmitting(true);
-        await signIn("credentials", {
+        const res = await signIn("credentials", {
             ...values,
             redirect: false,
-        })
-            .then(() => {
-                router.push("/dashboard");
-            })
-            .catch((error) => {
-                toast.error(t("public/sign-in:error.wrongUsernameOrPassword"), {
-                    duration: 5000,
-                    position: "top-center",
-                });
-            })
-            .finally(() => {
-                setIsSubmitting(false);
+        });
+        if (!res?.error) {
+            router.push("/dashboard");
+        } else {
+            toast.error(t("public/sign-in:error.wrongUsernameOrPassword"), {
+                duration: 5000,
+                position: "top-center",
             });
+        }
+        setIsSubmitting(false);
     }
 
     return (

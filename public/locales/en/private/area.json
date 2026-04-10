@@ -1,0 +1,21 @@
+{
+    "table": {
+        "column": {
+            "no": "No.",
+            "name": "Name",
+            "countryCode": "Short name",
+            "flag": "Flag",
+            "parent": "Parent area",
+            "createdAt": "Created at",
+            "createdBy": "Created by",
+            "updatedAt": "Updated at",
+            "updatedBy": "Updated by"
+        }
+    },
+    "message": {
+        "updateManually": {
+            "success": "Successfully added {{value}} records",
+            "error": "Add failed"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "table": {
+        "column": {
+            "no": "STT",
+            "name": "Tên khu vực",
+            "countryCode": "Tên viết tắt",
+            "flag": "Quốc kỳ",
+            "parent": "Thuộc khu vực",
+            "createdAt": "Ngày tạo",
+            "createdBy": "Người tạo",
+            "updatedAt": "Ngày cập nhật",
+            "updatedBy": "Người cập nhật"
+        }
+    },
+    "message": {
+        "updateManually": {
+            "success": "Thêm mới thành công {{value}} bản ghi",
+            "error": "Thêm mới thất bại"
+        },
+        "form": {
+            "notNull": "Trường dữ liệu không được để trống"
+        },
+        "create": {
+            "success": "Thêm mới thành công",
+            "error": "Thêm mới thất bại"
+        },
+        "edit": {
+            "success": "Cập nhật thành công",
+            "error": "Cập nhật thất bại"
+        },
+        "delete": {
+            "success": "Xóa thành công",
+            "error": "Xóa thất bại"
+        }
+    },
+    "dialog": {
+        "create": {
+            "title": "Tạo khu vực"
+        },
+        "view": {
+            "title": "Thông tin khu vực"
+        },
+        "edit": {
+            "title": "Sửa khu vực"
+        },
+        "delete": {
+            "title": "Xóa khu vực",
+            "description": "Bạn có chắc chắn muốn xóa khu vực \"{{name}}\""
+        }
+    }
+}

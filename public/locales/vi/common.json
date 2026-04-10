@@ -4,6 +4,34 @@
         "signUp": "Đăng ký",
         "signPut": "Đăng xuất",
         "save": "Lưu",
-        "cancel": "Hủy"
-    }
+        "cancel": "Hủy",
+        "delete": "Xóa",
+        "confirm": "Xác nhận",
+        "updateManually": "Cập nhật thủ công",
+        "create": "Thêm",
+        "view": "Xem",
+        "edit": "Sửa"
+    },
+    "no": "STT",
+    "action": "Hành động",
+    "filter": {
+        "contains": "Bao gồm",
+        "equals": "Bằng",
+        "neq": "Khác",
+        "startswith": "Bắt đầu với",
+        "endswith": "Kết thúc với",
+        "in": "Trong",
+        "notIn": "Không trong",
+        "gt": "Lớn hơn",
+        "gte": "Lớn hơn hoặc bằng",
+        "lt": "Nhỏ hơn",
+        "lte": "Nhỏ hơn hoặc bằng"
+    },
+    "pagination": {
+        "page": "Trang: {{currentPage}}/{{totalPages}}",
+        "total": "Tổng: {{totalElements}} bản ghi",
+        "size": "Số bản ghi/trang",
+        "jump": "Đi đến trang"
+    },
+    "empty": "Không có dữ liệu"
 }

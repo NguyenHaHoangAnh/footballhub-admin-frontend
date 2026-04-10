@@ -1,8 +1,8 @@
 "use client";
 
-import { SideBar } from "@/app/types/sidebar";
+import { SideBarDto } from "@/app/types/sidebar";
 
-export const sidebar: SideBar[] = [
+export const sidebar: SideBarDto[] = [
     {
         objectId: 1,
         parentId: 0,

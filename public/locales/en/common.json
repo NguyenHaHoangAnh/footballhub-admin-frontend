@@ -4,6 +4,33 @@
         "signUp": "Sign up",
         "signPut": "Sign out",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "updateManually": "Update manually",
+        "create": "Create",
+        "view": "View",
+        "edit": "Edit"
+    },
+    "no": "No.",
+    "action": "Action",
+    "filter": {
+        "contains": "Contains",
+        "equals": "Equals",
+        "neq": "Not equals",
+        "startswith": "Starts with",
+        "endswith": "Ends with",
+        "in": "In",
+        "notIn": "Not in",
+        "gt": "Greater than",
+        "gte": "Greater than or equal",
+        "lt": "Less than",
+        "lte": "Less than or equal"
+    },
+    "pagination": {
+        "page": "Page: {{currentPage}}/{{totalPages}}",
+        "total": "Total: {{totalElements}} records",
+        "size": "Records/page",
+        "jump": "Go to page"
     }
 }
