@@ -1,0 +1,58 @@
+{
+    "table": {
+        "column": {
+            "no": "Vị trí",
+            "teamName": "Tên đội",
+            "playedGames": "Đã đấu",
+            "won": "Thắng",
+            "draw": "Hòa",
+            "lost": "Thua",
+            "goalsFor": "Bàn thắng",
+            "goalsAgainst": "Bàn thua",
+            "goalsDifference": "Hiệu số",
+            "points": "Điểm",
+            "form": "Lịch sử đấu",
+            "createdAt": "Ngày tạo",
+            "createdBy": "Người tạo",
+            "updatedAt": "Ngày cập nhật",
+            "updatedBy": "Người cập nhật"
+        }
+    },
+    "message": {
+        "updateManually": {
+            "success": "Thêm mới thành công {{value}} bản ghi",
+            "error": "Thêm mới thất bại"
+        },
+        "form": {
+            "notNull": "Trường dữ liệu không được để trống"
+        },
+        "create": {
+            "success": "Thêm mới thành công",
+            "error": "Thêm mới thất bại"
+        },
+        "edit": {
+            "success": "Cập nhật thành công",
+            "error": "Cập nhật thất bại"
+        },
+        "delete": {
+            "success": "Xóa thành công",
+            "error": "Xóa thất bại"
+        }
+    },
+    "dialog": {
+        "create": {
+            "title": "Tạo đội bóng"
+        },
+        "view": {
+            "title": "Thông tin đội bóng"
+        },
+        "edit": {
+            "title": "Sửa đội bóng"
+        },
+        "delete": {
+            "title": "Xóa đội bóng",
+            "description": "Bạn có chắc chắn muốn xóa đội bóng \"{{name}}\""
+        }
+    },
+    "matchUpdate": "Cập nhật trận đấu"
+}

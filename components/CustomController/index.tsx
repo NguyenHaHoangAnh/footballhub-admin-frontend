@@ -23,7 +23,7 @@ export default function CustomController<T>({
     onDelete?: (row: T) => void;
 }) {
     return (
-        <>
+        <div className="flex items-center gap-2 h-full">
             {controller.includes("R") && (
                 <Button
                     className="p-3 w-5 h-5 rounded-full"
@@ -48,6 +48,6 @@ export default function CustomController<T>({
                     <Trash2 className="w-4 h-4" />
                 </Button>
             )}
-        </>
+        </div>
     )
 }

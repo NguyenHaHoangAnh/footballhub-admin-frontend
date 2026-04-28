@@ -5,6 +5,7 @@ export type AreaDto = {
     flagUrl: string | null;
     parentAreaId: number | null;
     parentArea: string | null;
+    thirdPartyId: number | null;
     createdAt: string | null;
     createdBy: string | null;
     updatedAt: string | null;

@@ -37,6 +37,9 @@ export default function AreaDialogEdit({
             queryClient.invalidateQueries({
                 queryKey: ["findAllAreas", filter, sort, pagination]
             });
+            queryClient.invalidateQueries({
+                queryKey: ["findArea", selectedEtt?.areaId],
+            });
             onOpenChange();
         },
         onError: (error) => {

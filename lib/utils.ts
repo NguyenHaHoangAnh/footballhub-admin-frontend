@@ -29,8 +29,9 @@ export function getParams(
     const filterList = Object.entries(filter).map(([key, value]) => ({
       field: value.field,
       type: value.type,
-      compare: value.operator,
+      compare: value.compare,
       value: value.value,
+      operator: value.operator || null,
     }));
 
     if (filterList.length > 0) {

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
-import { findParentAreas } from "@/lib/api/area";
+import { findById, findParentAreas } from "@/lib/api/area";
 
 export default function AreaForm({
     selectedEtt,
@@ -61,31 +61,40 @@ export default function AreaForm({
         }
     });
 
-    const { data } = useQuery({
+    const { data: areaData } = useQuery({
+        queryKey: ["findArea", selectedEtt?.areaId],
+        enabled: !!selectedEtt?.areaId,
+        queryFn: async () => {
+            if (!selectedEtt?.areaId) return;
+            return findById({ id: selectedEtt.areaId });
+        },
+    });
+
+    const { data: parentAreaData } = useQuery({
         queryKey: ["findParentAreas"],
         queryFn: findParentAreas,
     });
 
     const parentAreaSelect = useMemo(() => {
-        if (!data?.data) return null;
+        if (!parentAreaData?.data) return null;
         const parentArea: { [key: string]: string } = {};
-        data.data.forEach((area: AreaDto) => {
+        parentAreaData.data.forEach((area: AreaDto) => {
             parentArea[area.areaId.toString()] = area.name;
         });
         return parentArea;
-    }, [data]);
+    }, [parentAreaData]);
 
     useEffect(() => {
-        if (!selectedEtt || mode === "create") return;
+        if (!areaData?.data || mode === "create") return;
         
         form.reset({
-            name: selectedEtt?.name || "",
-            countryCode: selectedEtt?.countryCode || "",
-            flagUrl: selectedEtt?.flagUrl || "",
-            parentAreaId: selectedEtt?.parentAreaId || undefined,
-            parentArea: selectedEtt?.parentArea || "",
+            name: areaData?.data?.name || "",
+            countryCode: areaData?.data?.countryCode || "",
+            flagUrl: areaData?.data?.flagUrl || "",
+            parentAreaId: areaData?.data?.parentAreaId || undefined,
+            parentArea: areaData?.data?.parentArea || "",
         });
-    }, [selectedEtt?.areaId]);
+    }, [areaData]);
 
     return (
         <Form {...form}>
@@ -110,7 +119,7 @@ export default function AreaForm({
                                     <Input 
                                         value={field.value}
                                         onChange={field.onChange}
-                                        readOnly={mode === "view"}
+                                        disabled={mode === "view"}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -130,7 +139,7 @@ export default function AreaForm({
                                     <Input 
                                         value={field.value}
                                         onChange={field.onChange}
-                                        readOnly={mode === "view"}
+                                        disabled={mode === "view"}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -151,7 +160,7 @@ export default function AreaForm({
                                     <Input 
                                         value={field.value}
                                         onChange={field.onChange}
-                                        readOnly={mode === "view"}
+                                        disabled={mode === "view"}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -169,6 +178,7 @@ export default function AreaForm({
                                 <FormControl>
                                     <Select
                                         key={field.value}
+                                        disabled={mode === "view"}
                                         value={field.value?.toString()}
                                         onValueChange={(value: string) => {
                                             if (mode === "view") return;

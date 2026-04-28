@@ -80,4 +80,15 @@ export const sidebar: SideBarDto[] = [
         isRender: "1",
         icon: null,
     },
+    {
+        objectId: 8,
+        parentId: 0,
+        objectType: "M",
+        name: "Bảng xếp hạng",
+        description: null,
+        status: 1,
+        path: "/standing",
+        isRender: "1",
+        icon: null,
+    },
 ];

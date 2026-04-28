@@ -33,5 +33,8 @@
         "size": "Số bản ghi/trang",
         "jump": "Đi đến trang"
     },
-    "empty": "Không có dữ liệu"
+    "empty": "Không có dữ liệu",
+    "placeholder": {
+        "search": "Tìm kiếm ..."
+    }
 }

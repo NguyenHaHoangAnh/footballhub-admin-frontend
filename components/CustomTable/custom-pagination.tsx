@@ -7,16 +7,18 @@ import { PAGE_SIZE_OPTIONS } from "@/lib/constant";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from "../ui/pagination";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { useStore } from "./store";
 
 export default function CustomPagination({
     totalPages,
     totalElements,
+    showPagination,
 }: {
     totalPages: number;
     totalElements: number;
+    showPagination: boolean;
 }) {
     const { t } = useTranslation(["common"]);
     const {
@@ -45,6 +47,12 @@ export default function CustomPagination({
 
         return pages;
     };
+
+    useEffect(() => {
+        return () => setPagination(0, pagination.size);
+    }, []);
+
+    if (!showPagination) return null;
 
     return (
         <div

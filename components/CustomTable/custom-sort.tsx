@@ -20,8 +20,8 @@ export default function CustomSort({
     } = useStore();
     const sortItems: SortItem[] = [
         { value: undefined, icon: <ChevronsUpDown className="w-4 h-4" /> },
-        { value: "asc", icon: <ChevronDown className="w-4 h-4" /> },
-        { value: "desc", icon: <ChevronUp className="w-4 h-4" /> },
+        { value: "asc", icon: <ChevronUp className="w-4 h-4" /> },
+        { value: "desc", icon: <ChevronDown className="w-4 h-4" /> },
     ];
     const initIndex = sortItems.findIndex((item) => item.value === sort[field]?.value);
     const [index, setIndex] = useState<number>(initIndex || 0);

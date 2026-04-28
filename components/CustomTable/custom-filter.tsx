@@ -4,15 +4,14 @@ import { Funnel } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { FILTER_OPTIONS } from "@/lib/constant";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input } from "../ui/input";
-import { ColumnType, FilterValue } from "@/components/CustomTable/types/table";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
 import { useStore } from "./store";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
-import { FilterOptionValue } from "./types/table";
+import { ColumnType, Filter, FilterCompare } from "./types/table";
 
 export default function CustomFilter({
     field,
@@ -29,10 +28,10 @@ export default function CustomFilter({
         setPagination,
     } = useStore();
     const [open, setOpen] = useState<boolean>(false);
-    const [filterValue, setFilterValue] = useState<FilterValue>({
+    const [filterValue, setFilterValue] = useState<Filter>({
         field,
         type,
-        operator: filter[field]?.operator || FILTER_OPTIONS[type][0].value,
+        compare: filter[field]?.compare || FILTER_OPTIONS[type][0].value,
         value: filter[field]?.value || "",
     });
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
@@ -42,8 +41,20 @@ export default function CustomFilter({
         setOpen(!open);
     }
 
+    useEffect(() => {
+        setFilterValue({
+            ...filterValue,
+            compare: filter[field]?.compare || FILTER_OPTIONS[type][0].value,
+            value: filter[field]?.value || "",
+        });
+    }, [field, type]);
+
+    useEffect(() => {
+        return () => handleClear();
+    }, []);
+
     const handleSave = () => {
-        setFilter(field, type, filterValue.operator, filterValue.value)
+        setFilter(field, type, filterValue.compare, filterValue.value)
         onOpenChange();
         setPagination(0, pagination.size);
     }
@@ -53,7 +64,7 @@ export default function CustomFilter({
         setFilterValue({
             field,
             type,
-            operator: FILTER_OPTIONS[type][0].value,
+            compare: FILTER_OPTIONS[type][0].value,
             value: "",
         });
         setDate(undefined);
@@ -61,7 +72,7 @@ export default function CustomFilter({
         setPagination(0, pagination.size);
     }
 
-    const isFiltered = useMemo(() => !!filter[field]?.operator && !!filter[field]?.value, [filter, field]);
+    const isFiltered = useMemo(() => !!filter[field]?.compare && !!filter[field]?.value, [filter, field]);
 
     return (
         <Popover open={open} onOpenChange={onOpenChange}>
@@ -72,8 +83,8 @@ export default function CustomFilter({
                 className="w-50 bg-white space-y-2"
             >
                 <Select 
-                    value={filterValue.operator} 
-                    onValueChange={(v: FilterOptionValue) => setFilterValue({...filterValue, operator: v})}
+                    value={filterValue.compare} 
+                    onValueChange={(v: FilterCompare) => setFilterValue({...filterValue, compare: v})}
                 >
                     <SelectTrigger>
                         <SelectValue />

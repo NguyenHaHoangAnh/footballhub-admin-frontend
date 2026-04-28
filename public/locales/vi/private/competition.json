@@ -1,0 +1,59 @@
+{
+    "table": {
+        "column": {
+            "no": "STT",
+            "area": {
+                "name": "Khu vực"
+            },
+            "name": "Tên giải đấu",
+            "code": "Tên viết tắt",
+            "type": "Thể loại",
+            "logoUrl": "Logo",
+            "currentSeasonId": "Mùa giải hiện tại",
+            "createdAt": "Ngày tạo",
+            "createdBy": "Người tạo",
+            "updatedAt": "Ngày cập nhật",
+            "updatedBy": "Người cập nhật"
+        }
+    },
+    "message": {
+        "updateManually": {
+            "success": "Thêm mới thành công {{value}} bản ghi",
+            "error": "Thêm mới thất bại"
+        },
+        "form": {
+            "notNull": "Trường dữ liệu không được để trống",
+            "empty": "Không tìm thấy dữ liệu"
+        },
+        "create": {
+            "success": "Thêm mới thành công",
+            "error": "Thêm mới thất bại"
+        },
+        "edit": {
+            "success": "Cập nhật thành công",
+            "error": "Cập nhật thất bại"
+        },
+        "delete": {
+            "success": "Xóa thành công",
+            "error": "Xóa thất bại"
+        }
+    },
+    "dialog": {
+        "create": {
+            "title": "Tạo giải đấu"
+        },
+        "view": {
+            "title": "Thông tin giải đấu"
+        },
+        "edit": {
+            "title": "Sửa giải đấu"
+        },
+        "delete": {
+            "title": "Xóa giải đấu",
+            "description": "Bạn có chắc chắn muốn xóa giải đấu \"{{name}}\""
+        }
+    },
+    "placeholder": {
+        "search": "Tìm kiếm khu vực ..."
+    }
+}

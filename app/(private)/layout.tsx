@@ -20,7 +20,7 @@ export default function Layout({
     return (
         <div className="mt-17.5 flex">
             <Sidebar />
-            <div className="p-5 w-full">
+            <div className="p-5 w-full overflow-x-hidden">
                 {children}
             </div>
         </div>

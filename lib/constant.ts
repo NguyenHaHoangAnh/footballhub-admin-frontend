@@ -1,4 +1,4 @@
-import { FilterOptions, FilterOptionValue } from "@/app/types/table";
+import { FilterOptions, FilterCompare, FilterOperator } from "@/app/types/table";
 
 export const SESSION_STATUS = {
     LOADING: "loading",
@@ -30,10 +30,27 @@ export const FILTER_OPTIONS: FilterOptions = {
     ],
 }
 
+export const FILTER_OPERATOR = {
+    AND: "and",
+    OR: "or",
+}
+
 export const IMAGE_FALLBACK = {
     flag: "/images/flags/no-flag.webp",
+    logo: "/images/logos/no-logo.webp",
 }
 
 export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export const DEFAULT_PAGE_SIZE = 10;
+
+export const COMPETITION_TYPES = {
+    LEAGUE: "LEAGUE",
+    CUP: "CUP",
+}
+
+export const RESULT_STATUS = {
+    WON: "W",
+    DRAW: "D",
+    LOST: "L",
+}

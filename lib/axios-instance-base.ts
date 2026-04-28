@@ -28,7 +28,7 @@ axiosInstanceBase.interceptors.response.use(
     async (error) => {
         // Nếu lỗi 401, 403 -> đăng xuất + redirect sang signin
         if ([401, 403].includes(error?.response?.status)) {
-            await signOut({ redirect: true, redirectTo: "/auth/sign-in" });
+            // await signOut({ redirect: true, redirectTo: "/auth/sign-in" });
         }
 
         return Promise.reject(error);
