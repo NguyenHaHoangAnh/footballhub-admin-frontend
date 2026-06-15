@@ -1,9 +1,9 @@
 import { CompetitionRequestDto } from "@/app/types/competition";
-import axiosInstanceBase from "../axios-instance-base";
+import axiosInstanceManage from "../axios-instance-manage";
 
 export async function updateManually() {
     try {
-        const response = await axiosInstanceBase.post("/competitions/updateManually");
+        const response = await axiosInstanceManage.post("/competitions/updateManually");
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -17,7 +17,7 @@ export async function findAll({
     params: string;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/competitions?${params}`);
+        const response = await axiosInstanceManage.get(`/competitions?${params}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -31,7 +31,7 @@ export async function findById({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/competitions/${id}`);
+        const response = await axiosInstanceManage.get(`/competitions/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ export async function create({
     payload: CompetitionRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/competitions", payload);
+        const response = await axiosInstanceManage.post("/competitions", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -61,7 +61,7 @@ export async function update({
     payload: CompetitionRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.put(`/competitions/${id}`, payload);
+        const response = await axiosInstanceManage.put(`/competitions/${id}`, payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -75,7 +75,7 @@ export async function del({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.delete(`/competitions/${id}`);
+        const response = await axiosInstanceManage.delete(`/competitions/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {

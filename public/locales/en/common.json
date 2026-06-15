@@ -1,36 +1,54 @@
 {
     "button": {
-        "signIn": "Sign in",
-        "signUp": "Sign up",
-        "signPut": "Sign out",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "signOut": "Sign Out",
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
         "confirm": "Confirm",
-        "updateManually": "Update manually",
+        "updateManually": "Update Manually",
         "create": "Create",
         "view": "View",
         "edit": "Edit"
     },
+    "language": {
+        "vi": "Vietnamese",
+        "en": "English"
+    },
     "no": "No.",
-    "action": "Action",
+    "action": "Actions",
     "filter": {
         "contains": "Contains",
         "equals": "Equals",
-        "neq": "Not equals",
-        "startswith": "Starts with",
-        "endswith": "Ends with",
+        "neq": "Not Equal",
+        "startswith": "Starts With",
+        "endswith": "Ends With",
         "in": "In",
-        "notIn": "Not in",
-        "gt": "Greater than",
-        "gte": "Greater than or equal",
-        "lt": "Less than",
-        "lte": "Less than or equal"
+        "notIn": "Not In",
+        "gt": "Greater Than",
+        "gte": "Greater Than or Equal",
+        "lt": "Less Than",
+        "lte": "Less Than or Equal"
     },
     "pagination": {
         "page": "Page: {{currentPage}}/{{totalPages}}",
-        "total": "Total: {{totalElements}} records",
-        "size": "Records/page",
+        "total": "Total: {{totalElements}} record(s)",
+        "size": "Records per page",
         "jump": "Go to page"
+    },
+    "empty": "No data available",
+    "placeholder": {
+        "search": "Search..."
+    },
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "users": "User Management",
+        "areas": "Region Management",
+        "competitions": "Competition Management",
+        "seasons": "Season Management",
+        "teams": "Team Management",
+        "matches": "Match Management",
+        "standings": "Standings"
     }
 }

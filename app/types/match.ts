@@ -40,7 +40,7 @@ export type MatchRequestDto = {
     awayTeamId: number;
     scoreHome?: number;
     scoreAway?: number;
-    winnerId: number;
+    winnerId?: number;
     thirdPartyId?: number;
     createdAt?: Date;
     createdBy?: string;

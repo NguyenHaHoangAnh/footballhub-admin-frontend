@@ -3,10 +3,10 @@
 import { MatchDto } from "@/app/types/match";
 import { Mode } from "@/app/types/modal";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AreaForm from "./area-form";
+import MatchForm from "./match-form";
 import { useTranslation } from "react-i18next";
 
-export default function AreaDialogView({
+export default function MatchDialogView({
     selectedEtt,
     open,
     onOpenChange,
@@ -17,16 +17,16 @@ export default function AreaDialogView({
     onOpenChange: () => void;
     mode: Mode;
 }) {
-    const { t } = useTranslation(["private/area"]);
+    const { t } = useTranslation(["private/match"]);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t("private/area:dialog.view.title")}</DialogTitle>
+                    <DialogTitle>{t("private/match:dialog.view.title")}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <AreaForm 
+                <MatchForm 
                     selectedEtt={selectedEtt}
                     mode={mode}
                     onOpenChange={onOpenChange}

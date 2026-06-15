@@ -2,7 +2,7 @@
     "button": {
         "signIn": "Đăng nhập",
         "signUp": "Đăng ký",
-        "signPut": "Đăng xuất",
+        "signOut": "Đăng xuất",
         "save": "Lưu",
         "cancel": "Hủy",
         "delete": "Xóa",
@@ -11,6 +11,10 @@
         "create": "Thêm",
         "view": "Xem",
         "edit": "Sửa"
+    },
+    "language": {
+        "vi": "Tiếng Việt",
+        "en": "English"
     },
     "no": "STT",
     "action": "Hành động",
@@ -36,5 +40,15 @@
     "empty": "Không có dữ liệu",
     "placeholder": {
         "search": "Tìm kiếm ..."
+    },
+    "sidebar": {
+        "dashboard": "Thống kê",
+        "users": "Quản lý người dùng",
+        "areas": "Quản lý khu vực",
+        "competitions": "Quản lý giải đấu",
+        "seasons": "Quản lý mùa giải",
+        "teams": "Quản lý đội",
+        "matches": "Quản lý trận đấu",
+        "standings": "Bảng xếp hạng"
     }
 }

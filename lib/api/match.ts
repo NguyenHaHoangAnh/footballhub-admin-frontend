@@ -1,5 +1,5 @@
 import { MatchRequestDto, MatchUpdateManuallyRequestDto } from "@/app/types/match";
-import axiosInstanceBase from "../axios-instance-base";
+import axiosInstanceManage from "../axios-instance-manage";
 
 export async function updateManually({
     payload
@@ -7,7 +7,7 @@ export async function updateManually({
     payload: MatchUpdateManuallyRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/matches/updateManually", payload);
+        const response = await axiosInstanceManage.post("/matches/updateManually", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -21,7 +21,7 @@ export async function findAll({
     params: string;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/matches?${params}`);
+        const response = await axiosInstanceManage.get(`/matches?${params}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ export async function findById({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/matches/${id}`);
+        const response = await axiosInstanceManage.get(`/matches/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ export async function findById({
 
 export async function findParentAreas() {
     try {
-        const response = await axiosInstanceBase.get("/matches/parentAreas");
+        const response = await axiosInstanceManage.get("/matches/parentAreas");
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -59,7 +59,7 @@ export async function create({
     payload: MatchRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/matches", payload);
+        const response = await axiosInstanceManage.post("/matches", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -75,7 +75,7 @@ export async function update({
     payload: MatchRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.put(`/matches/${id}`, payload);
+        const response = await axiosInstanceManage.put(`/matches/${id}`, payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -89,7 +89,7 @@ export async function del({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.delete(`/matches/${id}`);
+        const response = await axiosInstanceManage.delete(`/matches/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {

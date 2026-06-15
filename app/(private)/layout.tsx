@@ -18,9 +18,9 @@ export default function Layout({
     }, [session, status]);
 
     return (
-        <div className="mt-17.5 flex">
+        <div className="relative mt-17.5 flex">
             <Sidebar />
-            <div className="p-5 w-full overflow-x-hidden">
+            <div className="ml-64 p-5 w-full overflow-x-hidden">
                 {children}
             </div>
         </div>

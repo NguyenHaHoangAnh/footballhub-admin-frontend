@@ -11,10 +11,10 @@ import { TeamDto } from "@/app/types/team";
 import { useMemo, useState } from "react";
 import { Mode } from "@/app/types/modal";
 import { toast } from "sonner";
-import AreaDialogCreate from "./area-dialog-create"
-import AreaDialogEdit from "./area-dialog-edit";
-import AreaDialogView from "./area-dialog-view"
-import AreaDialogDelete from "./area-dialog-delete";
+import TeamDialogCreate from "./team-dialog-create"
+import TeamDialogEdit from "./team-dialog-edit";
+import TeamDialogView from "./team-dialog-view"
+import TeamDialogDelete from "./team-dialog-delete";
 import { AxiosError } from "axios";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -173,25 +173,25 @@ export default function Team() {
                 />
             </div>
 
-            <AreaDialogCreate
+            <TeamDialogCreate
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "create")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogView
+            <TeamDialogView
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "view")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogEdit 
+            <TeamDialogEdit 
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "edit")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogDelete 
+            <TeamDialogDelete 
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "delete")}
                 onOpenChange={onOpenModalChange}

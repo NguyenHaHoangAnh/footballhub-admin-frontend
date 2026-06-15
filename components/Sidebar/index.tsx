@@ -2,7 +2,7 @@
 
 import { SideBarDto } from "@/app/types/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
-import { sidebar } from "./config";
+import { useSidebar } from "./config";
 import { getSidebar } from "./helper";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -10,9 +10,11 @@ import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
+    const sidebar = useSidebar();
+    
     return (
         <div
-            className="px-4 py-2 w-64"
+            className="fixed px-4 py-2 w-64 h-full bg-white"
         >
             {sidebar && getSidebar(sidebar).map((item) => renderItem(item))}
         </div>

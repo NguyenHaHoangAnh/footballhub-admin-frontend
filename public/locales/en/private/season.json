@@ -2,10 +2,17 @@
     "table": {
         "column": {
             "no": "No.",
-            "name": "Region Name",
-            "countryCode": "Abbreviation",
-            "flag": "Flag",
-            "parent": "Belongs to Region",
+            "name": "Season Name",
+            "year": "Season Year",
+            "competition": {
+                "name": "Competition Name"
+            },
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "currentMatchDay": "Current Matchday",
+            "winner": {
+                "name": "Champion"
+            },
             "createdAt": "Created Date",
             "createdBy": "Created By",
             "updatedAt": "Updated Date",
@@ -35,17 +42,18 @@
     },
     "dialog": {
         "create": {
-            "title": "Create Region"
+            "title": "Create Season"
         },
         "view": {
-            "title": "Region Information"
+            "title": "Season Information"
         },
         "edit": {
-            "title": "Edit Region"
+            "title": "Edit Season"
         },
-            "delete": {
-            "title": "Delete Region",
-            "description": "Are you sure you want to delete the region \"{{name}}\"?"
+        "delete": {
+            "title": "Delete Season",
+            "description": "Are you sure you want to delete the season \"{{name}}\"?"
         }
-    }
+    },
+    "seasonUpdate": "Update Season"
 }

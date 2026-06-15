@@ -1,5 +1,5 @@
 import { StandingUpdateManuallyRequestDto } from "@/app/types/standing";
-import axiosInstanceBase from "../axios-instance-base";
+import axiosInstanceManage from "../axios-instance-manage";
 
 export async function updateManually({
     payload
@@ -7,7 +7,7 @@ export async function updateManually({
     payload: StandingUpdateManuallyRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/standings/updateManually", payload);
+        const response = await axiosInstanceManage.post("/standings/updateManually", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -21,7 +21,7 @@ export async function findByCompetitionIdAndSeasonId({
     payload: StandingUpdateManuallyRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/standings", payload);
+        const response = await axiosInstanceManage.post("/standings", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ export async function findByCompetitionIdAndSeasonId({
 //     params: string;
 // }) {
 //     try {
-//         const response = await axiosInstanceBase.get(`/standings?${params}`);
+//         const response = await axiosInstanceManage.get(`/standings?${params}`);
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {
@@ -49,7 +49,7 @@ export async function findByCompetitionIdAndSeasonId({
 //     id: number;
 // }) {
 //     try {
-//         const response = await axiosInstanceBase.get(`/standings/${id}`);
+//         const response = await axiosInstanceManage.get(`/standings/${id}`);
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {
@@ -59,7 +59,7 @@ export async function findByCompetitionIdAndSeasonId({
 
 // export async function findParentAreas() {
 //     try {
-//         const response = await axiosInstanceBase.get("/standings/parentAreas");
+//         const response = await axiosInstanceManage.get("/standings/parentAreas");
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {
@@ -73,7 +73,7 @@ export async function findByCompetitionIdAndSeasonId({
 //     payload: StandingRequestDto;
 // }) {
 //     try {
-//         const response = await axiosInstanceBase.post("/standings", payload);
+//         const response = await axiosInstanceManage.post("/standings", payload);
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {
@@ -89,7 +89,7 @@ export async function findByCompetitionIdAndSeasonId({
 //     payload: StandingRequestDto;
 // }) {
 //     try {
-//         const response = await axiosInstanceBase.put(`/standings/${id}`, payload);
+//         const response = await axiosInstanceManage.put(`/standings/${id}`, payload);
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {
@@ -103,7 +103,7 @@ export async function findByCompetitionIdAndSeasonId({
 //     id: number;
 // }) {
 //     try {
-//         const response = await axiosInstanceBase.delete(`/standings/${id}`);
+//         const response = await axiosInstanceManage.delete(`/standings/${id}`);
 
 //         return Promise.resolve(response.data);
 //     } catch (error) {

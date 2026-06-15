@@ -54,18 +54,31 @@
     },
     "dialog": {
         "create": {
-            "title": "Tạo đội bóng"
+            "title": "Tạo trận đấu"
         },
         "view": {
-            "title": "Thông tin đội bóng"
+            "title": "Thông tin trận đấu"
         },
         "edit": {
-            "title": "Sửa đội bóng"
+            "title": "Sửa trận đấu"
         },
         "delete": {
-            "title": "Xóa đội bóng",
-            "description": "Bạn có chắc chắn muốn xóa đội bóng \"{{name}}\""
+            "title": "Xóa trận đấu",
+            "description": "Bạn có chắc chắn muốn xóa trận đấu \"{{name}}\""
         }
     },
-    "matchUpdate": "Cập nhật trận đấu"
+    "matchUpdate": "Cập nhật trận đấu",
+    "status": {
+        "timed": "Chưa diễn ra",
+        "live": "Đang diễn ra",
+        "in_play": "Đang diễn ra",
+        "pause": "Tạm dừng",
+        "finished": "Đã kết thúc",
+        "postponed": "Hoãn",
+        "suspended": "Tạm ngưng",
+        "cancelled": "Hủy"
+    },
+    "result": {
+        "draw": "Hòa"
+    }
 }

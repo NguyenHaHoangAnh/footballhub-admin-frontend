@@ -1,0 +1,84 @@
+{
+    "table": {
+        "column": {
+            "no": "No.",
+            "area": {
+                "name": "Region Name"
+            },
+            "competition": {
+                "name": "Competition Name"
+            },
+            "season": {
+                "name": "Season"
+            },
+            "startDate": "Match Date",
+            "status": "Status",
+            "matchDay": "Matchday",
+            "homeTeam": {
+                "name": "Home Team Name"
+            },
+            "awayTeam": {
+                "name": "Away Team Name"
+            },
+            "scoreHome": "Home Team Score",
+            "scoreAway": "Away Team Score",
+            "winner": {
+                "name": "Winning Team"
+            },
+            "createdAt": "Created Date",
+            "createdBy": "Created By",
+            "updatedAt": "Updated Date",
+            "updatedBy": "Updated By"
+        }
+    },
+    "message": {
+        "updateManually": {
+            "success": "Successfully added {{value}} record(s)",
+            "error": "Failed to add records"
+        },
+        "form": {
+            "notNull": "This field cannot be empty"
+        },
+        "create": {
+            "success": "Created successfully",
+            "error": "Creation failed"
+        },
+        "edit": {
+            "success": "Updated successfully",
+            "error": "Update failed"
+        },
+        "delete": {
+            "success": "Deleted successfully",
+            "error": "Deletion failed"
+        }
+    },
+    "dialog": {
+        "create": {
+            "title": "Create match"
+        },
+        "view": {
+            "title": "Match Information"
+        },
+        "edit": {
+            "title": "Edit match"
+        },
+        "delete": {
+            "title": "Delete match",
+            "description": "Are you sure you want to delete the match \"{{name}}\"?"
+        }
+    },
+    "matchUpdate": "Match Update",
+    "status": {
+        "timed": "Scheduled",
+        "live": "Live",
+        "in_play": "In Progress",
+        "pause": "Paused",
+        "finished": "Finished",
+        "postponed": "Postponed",
+        "suspended": "Suspended",
+        "cancelled": "Cancelled"
+    },
+    "result": {
+        "draw": "Draw"
+    }
+}

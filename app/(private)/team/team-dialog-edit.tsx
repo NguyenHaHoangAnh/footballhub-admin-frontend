@@ -1,46 +1,49 @@
 "use client";
 
-import { MatchDto, MatchRequestDto } from "@/app/types/match";
+import { TeamDto, TeamRequestDto } from "@/app/types/team";
 import { Mode } from "@/app/types/modal";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AreaForm from "./area-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { create } from "@/lib/api/area";
-import { toast } from "sonner";
+import TeamForm from "./team-form";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { update } from "@/lib/api/team";
+import { toast } from "sonner";
 import { useCustomTable } from "@/components/CustomTable";
 import { AxiosError } from "axios";
 
-export default function AreaDialogCreate({
+export default function TeamDialogEdit({
     selectedEtt,
     open,
     onOpenChange,
     mode,
 }: {
-    selectedEtt: MatchDto | null;
+    selectedEtt: TeamDto | null;
     open: boolean;
     onOpenChange: () => void;
     mode: Mode;
 }) {
-    const { t } = useTranslation(["private/match"]);
+    const { t } = useTranslation(["private/team"]);
     const queryClient = useQueryClient();
     const { filter, sort, pagination } = useCustomTable();
-    
-    const createApi = useMutation({
-        mutationKey: ["createArea"],
-        mutationFn: create,
+
+    const updateApi = useMutation({
+        mutationKey: ["updateTeam"],
+        mutationFn: (data: {id: number, payload: TeamRequestDto}) => update(data),
         onSuccess: () => {
-            toast.success(t("private/match:message.create.success"), {
+            toast.success(t("private/team:message.edit.success"), {
                 duration: 5000,
                 position: "top-center",
             });
             queryClient.invalidateQueries({
-                queryKey: ["findAllAreas", filter, sort, pagination]
+                queryKey: ["findAllTeams", filter, sort, pagination]
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["findTeam", selectedEtt?.areaId]
             });
             onOpenChange();
         },
         onError: (error) => {
-            let message = t("private/match:message.create.error");
+            let message = t("private/team:message.edit.error");
 
             const axiosError = error as AxiosError<any>;
             if (axiosError?.response?.data?.resultMsg) {
@@ -54,21 +57,23 @@ export default function AreaDialogCreate({
         }
     });
 
-    const handleSubmit = async (value: MatchRequestDto) => {
+    const handleSubmit = async (value: TeamRequestDto) => {
+        if (!selectedEtt) return;
         console.log('[value]', value);
-        // createApi.mutate({
-        //     payload: value,
-        // });
+        updateApi.mutate({
+            id: selectedEtt.areaId, 
+            payload: value}
+        );
     }
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t("private/match:dialog.create.title")}</DialogTitle>
+                    <DialogTitle>{t("private/team:dialog.edit.title")}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <AreaForm 
+                <TeamForm 
                     selectedEtt={selectedEtt}
                     mode={mode}
                     onSubmit={handleSubmit}

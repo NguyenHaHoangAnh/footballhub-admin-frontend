@@ -2,10 +2,18 @@
     "table": {
         "column": {
             "no": "No.",
-            "name": "Region Name",
-            "countryCode": "Abbreviation",
-            "flag": "Flag",
-            "parent": "Belongs to Region",
+            "name": "Team Name",
+            "shortName": "Short Name",
+            "tla": "Abbreviation",
+            "area": {
+                "name": "Region"
+            },
+            "logoUrl": "Logo",
+            "address": "Address",
+            "website": "Website",
+            "founded": "Founded Year",
+            "clubColors": "Club Colors",
+            "venue": "Stadium",
             "createdAt": "Created Date",
             "createdBy": "Created By",
             "updatedAt": "Updated Date",
@@ -35,17 +43,18 @@
     },
     "dialog": {
         "create": {
-            "title": "Create Region"
+            "title": "Create Team"
         },
         "view": {
-            "title": "Region Information"
+            "title": "Team Information"
         },
         "edit": {
-            "title": "Edit Region"
+            "title": "Edit Team"
         },
-            "delete": {
-            "title": "Delete Region",
-            "description": "Are you sure you want to delete the region \"{{name}}\"?"
+        "delete": {
+            "title": "Delete Team",
+            "description": "Are you sure you want to delete the team \"{{name}}\"?"
         }
-    }
+    },
+    "teamUpdate": "Update Team"
 }

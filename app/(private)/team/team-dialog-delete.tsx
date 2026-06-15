@@ -5,13 +5,13 @@ import { Mode } from "@/app/types/modal";
 import { useCustomTable } from "@/components/CustomTable";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { del } from "@/lib/api/area";
+import { del } from "@/lib/api/team";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function AreaDialogDelete({
+export default function TeamDialogDelete({
     selectedEtt,
     open,
     onOpenChange,
@@ -22,25 +22,25 @@ export default function AreaDialogDelete({
     onOpenChange: () => void;
     mode: Mode;
 }) {
-    const { t } = useTranslation(["common", "private/area"]);
+    const { t } = useTranslation(["common", "private/team"]);
     const queryClient = useQueryClient();
     const { filter, sort, pagination } = useCustomTable();
 
-    const deleteAreaApi = useMutation({
-        mutationKey: ["deleteArea"],
+    const deleteApi = useMutation({
+        mutationKey: ["deleteTeam"],
         mutationFn: (data: { id: number }) => del(data),
         onSuccess: () => {
-            toast.success(t("private/area:message.delete.success"), {
+            toast.success(t("private/team:message.delete.success"), {
                 duration: 5000,
                 position: "top-center",
             });
             queryClient.invalidateQueries({
-                queryKey: ["findAllAreas", filter, sort, pagination]
+                queryKey: ["findAllTeams", filter, sort, pagination]
             });
             onOpenChange();
         },
         onError: (error) => {
-            let message = t("private/area:message.delete.error");
+            let message = t("private/team:message.delete.error");
 
             const axiosError = error as AxiosError<any>;
             if (axiosError?.response?.data?.resultMsg) {
@@ -56,18 +56,18 @@ export default function AreaDialogDelete({
 
     const handleSubmit = async () => {
         if (!selectedEtt) return;
-        // deleteAreaApi.mutate({
-        //     id: selectedEtt.areaId,
-        // });
+        deleteApi.mutate({
+            id: selectedEtt.teamId,
+        });
     }
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t("private/area:dialog.delete.title")}</DialogTitle>
+                    <DialogTitle>{t("private/team:dialog.delete.title")}</DialogTitle>
                     <DialogDescription>
-                        {t("private/area:dialog.delete.description", { 
+                        {t("private/team:dialog.delete.description", { 
                             name: selectedEtt?.name || "" 
                         })}
                     </DialogDescription>

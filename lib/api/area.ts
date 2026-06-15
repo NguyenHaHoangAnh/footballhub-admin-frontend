@@ -1,9 +1,9 @@
 import { AreaRequestDto } from "@/app/types/area";
-import axiosInstanceBase from "../axios-instance-base";
+import axiosInstanceManage from "../axios-instance-manage";
 
 export async function updateManually() {
     try {
-        const response = await axiosInstanceBase.post("/areas/updateManually");
+        const response = await axiosInstanceManage.post("/areas/updateManually");
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -17,7 +17,7 @@ export async function findAll({
     params: string;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/areas?${params}`);
+        const response = await axiosInstanceManage.get(`/areas?${params}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -31,7 +31,7 @@ export async function findById({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/areas/${id}`);
+        const response = await axiosInstanceManage.get(`/areas/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -41,7 +41,7 @@ export async function findById({
 
 export async function findParentAreas() {
     try {
-        const response = await axiosInstanceBase.get("/areas/parentAreas");
+        const response = await axiosInstanceManage.get("/areas/parentAreas");
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -55,7 +55,7 @@ export async function create({
     payload: AreaRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/areas", payload);
+        const response = await axiosInstanceManage.post("/areas", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -71,7 +71,7 @@ export async function update({
     payload: AreaRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.put(`/areas/${id}`, payload);
+        const response = await axiosInstanceManage.put(`/areas/${id}`, payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -85,7 +85,7 @@ export async function del({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.delete(`/areas/${id}`);
+        const response = await axiosInstanceManage.delete(`/areas/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {

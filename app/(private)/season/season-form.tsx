@@ -18,6 +18,8 @@ import { formatDate, getParams } from "@/lib/utils";
 import { CompetitionDto } from "@/app/types/competition";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { findByCompetitionId } from "@/lib/api/team";
+import { TeamDto } from "@/app/types/team";
 
 export default function SeasonForm({
     selectedEtt,
@@ -85,7 +87,7 @@ export default function SeasonForm({
     });
 
     const { data: competitionData } = useQuery({
-        queryKey: ["findCompetitions"],
+        queryKey: ["findAllCompetitions"],
         queryFn: () => findAllCompetitions({
             params: getParams({}, {}, { page: 0, size: 999999 }),
         }),
@@ -99,6 +101,24 @@ export default function SeasonForm({
         });
         return competitions;
     }, [competitionData]);
+
+    const { data: teamData } = useQuery({
+        queryKey: ["findAllTeams", form?.getValues("competitionId")],
+        queryFn: () => {
+            if (!form?.getValues("competitionId")) return;
+            return findByCompetitionId({ id: form.getValues("competitionId") });
+        },
+        enabled: !!form?.getValues("competitionId"),
+    });
+
+    const teamSelect = useMemo(() => {
+        if (!teamData?.data) return null;
+        const teams: { [key: string]: string } = {};
+        teamData.data.forEach((team: TeamDto) => {
+            teams[team.teamId.toString()] = team.name;
+        });
+        return teams;
+    }, [teamData]);
 
     useEffect(() => {
         if (!seasonData?.data || mode === "create") return;
@@ -151,12 +171,27 @@ export default function SeasonForm({
                             <FormItem>
                                 <FormLabel>
                                     {t("private/season:table.column.year")}
-                                    <span className="text-red-600">*</span>
                                 </FormLabel>
                                 <FormControl>
                                     <Input 
-                                        value={field.value}
-                                        onChange={field.onChange}
+                                        type="number"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        value={field.value?.toString() || ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            // cho phép rỗng (để xóa)
+                                            if (value === "") {
+                                                field.onChange(undefined);
+                                                return;
+                                            }
+
+                                            // chỉ cho số
+                                            if (/^[0-9]+$/.test(value)) {
+                                                field.onChange(Number(value));
+                                            }
+                                        }}
                                         disabled={mode === "view"}
                                     />
                                 </FormControl>
@@ -173,12 +208,13 @@ export default function SeasonForm({
                             <FormItem>
                                 <FormLabel>
                                     {t("private/season:table.column.competition.name")}
+                                    <span className="text-red-600">*</span>
                                 </FormLabel>
                                 <FormControl>
                                     <Select
                                         key={field.value}
                                         disabled={mode === "view"}
-                                        value={field.value?.toString()}
+                                        value={field.value?.toString() || ""}
                                         onValueChange={(value: string) => {
                                             if (mode === "view") return;
                                             field.onChange(Number(value));
@@ -188,7 +224,7 @@ export default function SeasonForm({
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent
-                                            className="bg-white"
+                                            className="max-h-50 bg-white overflow-y-auto"
                                         >
                                             {competitionSelect && Object.keys(competitionSelect).map((key: string, index: number) => (
                                                 <SelectItem value={key} key={index}>
@@ -242,6 +278,126 @@ export default function SeasonForm({
                                             </PopoverContent>
                                         </Popover>
                                     </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <FormField 
+                        control={form.control}
+                        name="endDate"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/season:table.column.endDate")}
+                                </FormLabel>
+                                <FormControl>
+                                    <div
+                                        className="relative"
+                                    >
+                                        <Popover open={openCalendar.endDate} onOpenChange={(value: boolean) => setOpenCalendar((prev) => ({ ...prev, endDate: value }))}>
+                                            <PopoverTrigger asChild disabled={mode === "view"}>
+                                                <Input 
+                                                    readOnly
+                                                    value={formatDate(field.value?.toString())}
+                                                    className="text-left cursor-pointer"
+                                                />
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                className="mt-1 bg-white"
+                                            >
+                                                <Calendar 
+                                                    mode="single"
+                                                    captionLayout="dropdown"
+                                                    className="w-full"
+                                                    classNames={{
+                                                        nav: "absolute inset-x-0 top-2.5 flex w-full items-center justify-between gap-1"
+                                                    }}
+                                                    selected={field.value}
+                                                    month={field.value}
+                                                    onSelect={(selectedDate) => {
+                                                        field.onChange(selectedDate);
+                                                        setOpenCalendar((prev) => ({ ...prev, endDate: false }));
+                                                    }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField 
+                        control={form.control}
+                        name="currentMatchDay"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/season:table.column.currentMatchDay")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        type="number"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        value={field.value?.toString() || ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            // cho phép rỗng (để xóa)
+                                            if (value === "") {
+                                                field.onChange(undefined);
+                                                return;
+                                            }
+
+                                            // chỉ cho số
+                                            if (/^[0-9]+$/.test(value)) {
+                                                field.onChange(Number(value));
+                                            }
+                                        }}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <FormField 
+                        control={form.control}
+                        name="winnerId"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/season:table.column.winner.name")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Select
+                                        key={field.value}
+                                        disabled={mode === "view" || !teamSelect}
+                                        value={field.value?.toString() || ""}
+                                        onValueChange={(value: string) => {
+                                            if (mode === "view") return;
+                                            field.onChange(Number(value));
+                                        }}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent
+                                            className="max-h-50 bg-white overflow-y-auto"
+                                        >
+                                            {teamSelect && Object.keys(teamSelect).map((key: string, index: number) => (
+                                                <SelectItem value={key} key={index}>
+                                                    {teamSelect[key]}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

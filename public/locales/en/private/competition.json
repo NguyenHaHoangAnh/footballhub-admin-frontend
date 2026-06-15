@@ -2,10 +2,14 @@
     "table": {
         "column": {
             "no": "No.",
-            "name": "Region Name",
-            "countryCode": "Abbreviation",
-            "flag": "Flag",
-            "parent": "Belongs to Region",
+            "area": {
+                "name": "Region"
+            },
+            "name": "Tournament Name",
+            "code": "Abbreviation",
+            "type": "Category",
+            "logoUrl": "Logo",
+            "currentSeasonId": "Current Season",
             "createdAt": "Created Date",
             "createdBy": "Created By",
             "updatedAt": "Updated Date",
@@ -18,7 +22,8 @@
             "error": "Failed to add records"
         },
         "form": {
-            "notNull": "This field cannot be empty"
+            "notNull": "This field cannot be empty",
+            "empty": "No data found"
         },
         "create": {
             "success": "Created successfully",
@@ -35,17 +40,20 @@
     },
     "dialog": {
         "create": {
-            "title": "Create Region"
+            "title": "Create Tournament"
         },
         "view": {
-            "title": "Region Information"
+            "title": "Tournament Information"
         },
         "edit": {
-            "title": "Edit Region"
+            "title": "Edit Tournament"
         },
-            "delete": {
-            "title": "Delete Region",
-            "description": "Are you sure you want to delete the region \"{{name}}\"?"
+        "delete": {
+            "title": "Delete Tournament",
+        "description": "Are you sure you want to delete the tournament \"{{name}}\"?"
         }
+    },
+    "placeholder": {
+        "search": "Search regions..."
     }
 }

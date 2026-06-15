@@ -6,85 +6,101 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CompetitionDto, CompetitionRequestDto } from "@/app/types/competition";
+import { useEffect, useMemo, useState } from "react";
+import { TeamDto, TeamRequestDto } from "@/app/types/team";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { findParentAreas } from "@/lib/api/area";
+import { findById } from "@/lib/api/team";
 import { findAll as findAllAreas } from "@/lib/api/area";
-import { findAll as findAllSeasons } from "@/lib/api/season";
-import { findById } from "@/lib/api/competition";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandItem, CommandList } from "@/components/ui/command";
-import { CommandInput } from "cmdk";
-import { AreaDto } from "@/app/types/area";
-import { getParams } from "@/lib/utils";
-import { debounce } from "@/lib/debounce";
 import { useDebounce } from "@/lib/hooks/useDebounce";
-import { COMPETITION_TYPES } from "@/lib/constant";
-import { SeasonDto } from "@/app/types/season";
+import { getParams } from "@/lib/utils";
+import { AreaDto } from "@/app/types/area";
 
-export default function CompetitionForm({
+export default function AreaForm({
     selectedEtt,
     mode,
     onSubmit,
     onOpenChange,
 }: {
-    selectedEtt: CompetitionDto | null;
+    selectedEtt: TeamDto | null;
     mode: Mode;
-    onSubmit?: (value: CompetitionRequestDto) => void;
+    onSubmit?: (value: TeamRequestDto) => void;
     onOpenChange: () => void;
 }) {
-    const { t } = useTranslation(["common", "private/competition"]);
+    const { t } = useTranslation(["common", "private/team"]);
     const [areaSearch, setAreaSearch] = useState<string>("");
     const areaSearchDebounce = useDebounce(areaSearch, 500);
     const [areaOpen, setAreaOpen] = useState<boolean>(false);
 
     const FormSchema = z.object({
-        areaId: z
-            .number()
-            .min(1, t("private/team:message.form.notNull")),
         name: z
             .string()
             .trim()
-            .min(1, t("private/competition:message.form.notNull")),
-        code: z
+            .min(1, t("private/team:message.form.notNull")),
+        shortName: z
             .string()
             .trim()
-            .min(1, t("private/competition:message.form.notNull")),
-        type: z
+            .optional(),
+        tla: z
             .string()
             .trim()
-            .min(1, t("private/competition:message.form.notNull")),
+            .optional(),
+        areaId: z
+            .number()
+            .min(1, t("private/team:message.form.notNull")),
         logoUrl: z
             .string()
             .trim()
             .optional(),
-        currentSeasonId: z
+        address: z
+            .string()
+            .trim()
+            .optional(),
+        website: z
+            .string()
+            .trim()
+            .optional(),
+        founded: z
             .number()
-            .min(1, t("private/competition:message.form.notNull"))
+            .optional(),
+        clubColors: z
+            .string()
+            .trim()
+            .optional(),
+        venue: z
+            .string()
+            .trim()
+            .optional(),
     });
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         mode: "onChange",
         defaultValues: {
-            areaId: undefined,
             name: "",
-            code: "",
-            type: "",
+            shortName: "",
+            tla: "",
+            areaId: undefined,
             logoUrl: "",
-            currentSeasonId: undefined,
+            address: "",
+            website: "",
+            founded: undefined,
+            clubColors: "",
+            venue: "",
         }
     });
 
-    const { data: competitionData } = useQuery({
-        queryKey: ["findCompetition", selectedEtt?.competitionId],
-        enabled: !!selectedEtt?.competitionId,
+    const { data: teamData } = useQuery({
+        queryKey: ["findTeam", selectedEtt?.teamId],
+        enabled: !!selectedEtt?.teamId,
         queryFn: async () => {
-            if (!selectedEtt?.competitionId) return;
-            return findById({ id: selectedEtt?.competitionId });
+            if (!selectedEtt?.teamId) return;
+            return findById({ id: selectedEtt?.teamId });
         },
     });
 
@@ -100,26 +116,6 @@ export default function CompetitionForm({
         }),
     });
 
-    const { data: seasonData } = useQuery({
-        queryKey: ["findAllSeason"],
-        queryFn: async () => findAllSeasons({
-            params: "",
-        })
-    })
-    
-    useEffect(() => {
-        if (!competitionData?.data || mode === "create") return;
-        
-        form.reset({
-            areaId: competitionData?.data?.areaId || undefined,
-            name: competitionData?.data?.name || "",
-            code: competitionData?.data?.code || "",
-            type: competitionData?.data?.type || "",
-            logoUrl: competitionData?.data?.logoUrl || "",
-            currentSeasonId: competitionData?.data?.currentSeasonId || undefined,
-        });
-    }, [competitionData]);
-    
     const areaSelect = useMemo(() => {
         if (!areaData?.data?.content) return null;
         const areas: { [key: string]: string } = {};
@@ -129,14 +125,22 @@ export default function CompetitionForm({
         return areas;
     }, [areaData?.data?.content]);
 
-    const seasonSelect = useMemo(() => {
-        if (!seasonData?.data?.content) return null;
-        const seasons: { [key: string]: string } = {};
-        seasonData.data.content.forEach((season: SeasonDto) => {
-            seasons[season.seasonId.toString()] = season.name || "";
-        })
-        return seasons;
-    }, [seasonData?.data?.content]);
+    useEffect(() => {
+        if (!teamData?.data || mode === "create") return;
+        
+        form.reset({
+            name: teamData?.data?.name || "",
+            shortName: teamData?.data?.shortName || "",
+            tla: teamData?.data?.tla || "",
+            areaId: teamData?.data?.areaId || undefined,
+            logoUrl: teamData?.data?.logoUrl || "",
+            address: teamData?.data?.address || "",
+            website: teamData?.data?.website || "",
+            founded: teamData?.data?.founded || undefined,
+            clubColors: teamData?.data?.clubColors || "",
+            venue: teamData?.data?.venue || "",
+        });
+    }, [teamData]);
 
     return (
         <Form {...form}>
@@ -150,11 +154,72 @@ export default function CompetitionForm({
                 <div className="grid grid-cols-2 gap-2">
                     <FormField 
                         control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.name")}
+                                    <span className="text-red-600">*</span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField 
+                        control={form.control}
+                        name="shortName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.shortName")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <FormField 
+                        control={form.control}
+                        name="tla"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.tla")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField 
+                        control={form.control}
                         name="areaId"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>
-                                    {t("private/competition:table.column.area.name")}
+                                    {t("private/team:table.column.area.name")}
+                                    <span className="text-red-600">*</span>
                                 </FormLabel>
                                 <FormControl>
                                     <Popover open={areaOpen} onOpenChange={() => setAreaOpen(!areaOpen)}>
@@ -163,7 +228,7 @@ export default function CompetitionForm({
                                                 className="text-left"
                                                 type="text"
                                                 readOnly
-                                                value={areaSelect?.[field.value] || competitionData?.data?.areaName || ""}
+                                                value={areaSelect?.[field.value] || teamData?.data?.areaName || ""}
                                             />
                                         </PopoverTrigger>
                                         <PopoverContent
@@ -202,82 +267,6 @@ export default function CompetitionForm({
                             </FormItem>
                         )}
                     />
-                    <FormField 
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>
-                                    {t("private/competition:table.column.name")}
-                                    <span className="text-red-600">*</span>
-                                </FormLabel>
-                                <FormControl>
-                                    <Input 
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        disabled={mode === "view"}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                    <FormField 
-                        control={form.control}
-                        name="code"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>
-                                    {t("private/competition:table.column.code")}
-                                </FormLabel>
-                                <FormControl>
-                                    <Input 
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        disabled={mode === "view"}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField 
-                        control={form.control}
-                        name="type"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>
-                                    {t("private/competition:table.column.type")}
-                                </FormLabel>
-                                <FormControl>
-                                    <Select
-                                        key={field.value}
-                                        disabled={mode === "view"}
-                                        value={field.value}
-                                        onValueChange={(value: string) => {
-                                            if (mode === "view") return;
-                                            field.onChange(value)
-                                        }}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-white">
-                                            <SelectItem value={COMPETITION_TYPES.LEAGUE}>
-                                                {COMPETITION_TYPES.LEAGUE}
-                                            </SelectItem>
-                                            <SelectItem value={COMPETITION_TYPES.CUP}>
-                                                {COMPETITION_TYPES.CUP}
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <FormField 
@@ -286,7 +275,7 @@ export default function CompetitionForm({
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>
-                                    {t("private/competition:table.column.logoUrl")}
+                                    {t("private/team:table.column.logoUrl")}
                                 </FormLabel>
                                 <FormControl>
                                     <Input 
@@ -301,35 +290,114 @@ export default function CompetitionForm({
                     />
                     <FormField 
                         control={form.control}
-                        name="currentSeasonId"
+                        name="address"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>
-                                    {t("private/competition:table.column.currentSeasonId")}
+                                    {t("private/team:table.column.address")}
                                 </FormLabel>
                                 <FormControl>
-                                    <Select
-                                        key={field.value}
-                                        value={field.value?.toString() || ""}
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
                                         disabled={mode === "view"}
-                                        onValueChange={(value: string) => {
-                                            if (mode === "view") return;
-                                            field.onChange(Number(value));
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <FormField 
+                        control={form.control}
+                        name="website"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.website")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField 
+                        control={form.control}
+                        name="founded"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.founded")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        type="number"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        value={field.value?.toString() || ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            // cho phép rỗng (để xóa)
+                                            if (value === "") {
+                                                field.onChange(undefined);
+                                                return;
+                                            }
+
+                                            // chỉ cho số
+                                            if (/^[0-9]+$/.test(value)) {
+                                                field.onChange(Number(value));
+                                            }
                                         }}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent
-                                            className="bg-white"
-                                        >
-                                            {seasonSelect && Object.keys(seasonSelect).map((key: string, index: number) => (
-                                                <SelectItem value={key} key={index}>
-                                                    {seasonSelect[key]}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <FormField 
+                        control={form.control}
+                        name="clubColors"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.clubColors")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField 
+                        control={form.control}
+                        name="venue"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    {t("private/team:table.column.venue")}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        disabled={mode === "view"}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

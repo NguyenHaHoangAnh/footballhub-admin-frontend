@@ -1,11 +1,17 @@
 {
     "table": {
         "column": {
-            "no": "No.",
-            "name": "Region Name",
-            "countryCode": "Abbreviation",
-            "flag": "Flag",
-            "parent": "Belongs to Region",
+            "no": "Position",
+            "teamName": "Team Name",
+            "playedGames": "Played",
+            "won": "Won",
+            "draw": "Drawn",
+            "lost": "Lost",
+            "goalsFor": "Goals For",
+            "goalsAgainst": "Goals Against",
+            "goalsDifference": "Goal Difference",
+            "points": "Points",
+            "form": "Recent Form",
             "createdAt": "Created Date",
             "createdBy": "Created By",
             "updatedAt": "Updated Date",
@@ -35,17 +41,18 @@
     },
     "dialog": {
         "create": {
-            "title": "Create Region"
+            "title": "Create Team"
         },
         "view": {
-            "title": "Region Information"
+            "title": "Team Information"
         },
         "edit": {
-            "title": "Edit Region"
+            "title": "Edit Team"
         },
-            "delete": {
-            "title": "Delete Region",
-            "description": "Are you sure you want to delete the region \"{{name}}\"?"
+        "delete": {
+            "title": "Delete Team",
+            "description": "Are you sure you want to delete the team \"{{name}}\"?"
         }
-    }
+    },
+    "matchUpdate": "Match Update"
 }

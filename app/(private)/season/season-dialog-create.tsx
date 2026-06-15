@@ -5,7 +5,7 @@ import { Mode } from "@/app/types/modal";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import SeasonForm from "./season-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { create } from "@/lib/api/area";
+import { create } from "@/lib/api/season";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useCustomTable } from "@/components/CustomTable";
@@ -27,7 +27,7 @@ export default function SeasonDialogCreate({
     const { filter, sort, pagination } = useCustomTable();
     
     const createApi = useMutation({
-        mutationKey: ["createArea"],
+        mutationKey: ["createSeason"],
         mutationFn: create,
         onSuccess: () => {
             toast.success(t("private/season:message.create.success"), {
@@ -35,7 +35,7 @@ export default function SeasonDialogCreate({
                 position: "top-center",
             });
             queryClient.invalidateQueries({
-                queryKey: ["findAllAreas", filter, sort, pagination]
+                queryKey: ["findAllSeasons", filter, sort, pagination]
             });
             onOpenChange();
         },
@@ -56,9 +56,9 @@ export default function SeasonDialogCreate({
 
     const handleSubmit = async (value: SeasonRequestDto) => {
         console.log('[value]', value);
-        // createApi.mutate({
-        //     payload: value,
-        // });
+        createApi.mutate({
+            payload: value,
+        });
     }
 
     return (

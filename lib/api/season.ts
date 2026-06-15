@@ -1,5 +1,5 @@
 import { SeasonRequestDto, SeasonUpdateManuallyRequestDto } from "@/app/types/season";
-import axiosInstanceBase from "../axios-instance-base";
+import axiosInstanceManage from "../axios-instance-manage";
 
 export async function updateManually({
     payload
@@ -7,7 +7,7 @@ export async function updateManually({
     payload: SeasonUpdateManuallyRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/seasons/updateManually", payload);
+        const response = await axiosInstanceManage.post("/seasons/updateManually", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -21,7 +21,7 @@ export async function findAll({
     params: string;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/seasons?${params}`);
+        const response = await axiosInstanceManage.get(`/seasons?${params}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ export async function findById({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/seasons/${id}`);
+        const response = await axiosInstanceManage.get(`/seasons/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -49,7 +49,7 @@ export async function findByCompetitionId({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.get(`/seasons/competition/${id}`);
+        const response = await axiosInstanceManage.get(`/seasons/competition/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -59,7 +59,7 @@ export async function findByCompetitionId({
 
 export async function findParentAreas() {
     try {
-        const response = await axiosInstanceBase.get("/seasons/parentAreas");
+        const response = await axiosInstanceManage.get("/seasons/parentAreas");
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -73,7 +73,7 @@ export async function create({
     payload: SeasonRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.post("/seasons", payload);
+        const response = await axiosInstanceManage.post("/seasons", payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -89,7 +89,7 @@ export async function update({
     payload: SeasonRequestDto;
 }) {
     try {
-        const response = await axiosInstanceBase.put(`/seasons/${id}`, payload);
+        const response = await axiosInstanceManage.put(`/seasons/${id}`, payload);
 
         return Promise.resolve(response.data);
     } catch (error) {
@@ -103,7 +103,7 @@ export async function del({
     id: number;
 }) {
     try {
-        const response = await axiosInstanceBase.delete(`/seasons/${id}`);
+        const response = await axiosInstanceManage.delete(`/seasons/${id}`);
 
         return Promise.resolve(response.data);
     } catch (error) {

@@ -32,7 +32,7 @@ export default function Season() {
     const { data } = useQuery({
         queryKey: ["findAllSeasons", filter, sort, pagination],
         queryFn: () => findAll({
-            params: getParams(filter, sort, pagination)
+            params: getParams(filter, { ...sort, "seasonId": { column: "seasonId", value: "desc" } }, pagination)
         }),
     });
 

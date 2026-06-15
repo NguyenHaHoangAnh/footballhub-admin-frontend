@@ -5,7 +5,7 @@ import { Mode } from "@/app/types/modal";
 import { useCustomTable } from "@/components/CustomTable";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { del } from "@/lib/api/area";
+import { del } from "@/lib/api/season";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
@@ -26,8 +26,8 @@ export default function SeasonDialogDelete({
     const queryClient = useQueryClient();
     const { filter, sort, pagination } = useCustomTable();
 
-    const deleteAreaApi = useMutation({
-        mutationKey: ["deleteArea"],
+    const deleteApi = useMutation({
+        mutationKey: ["deleteSeason"],
         mutationFn: (data: { id: number }) => del(data),
         onSuccess: () => {
             toast.success(t("private/season:message.delete.success"), {
@@ -35,7 +35,7 @@ export default function SeasonDialogDelete({
                 position: "top-center",
             });
             queryClient.invalidateQueries({
-                queryKey: ["findAllAreas", filter, sort, pagination]
+                queryKey: ["findAllSeasons", filter, sort, pagination]
             });
             onOpenChange();
         },
@@ -56,9 +56,9 @@ export default function SeasonDialogDelete({
 
     const handleSubmit = async () => {
         if (!selectedEtt) return;
-        // deleteAreaApi.mutate({
-        //     id: selectedEtt.areaId,
-        // });
+        deleteApi.mutate({
+            id: selectedEtt.seasonId,
+        });
     }
 
     return (

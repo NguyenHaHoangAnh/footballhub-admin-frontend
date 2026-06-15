@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function SignIn() {
     const { t } = useTranslation(["common", "public/sign-in"]);
@@ -60,66 +61,69 @@ export default function SignIn() {
     }
 
     return (
-        <div>
-            <div>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)}>
-                        <FormField 
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        {t("public/sign-in:label.username")}
-                                        <span className="text-red-600">*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        {t("public/sign-in:label.password")}
-                                        <span className="text-red-600">*</span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <InputGroup>
-                                            <InputGroupInput 
-                                                type={showPassword ? "text" : "password"}
+        <div className="flex justify-center items-center w-full h-screen">
+            <Card className="w-1/4">
+                <CardHeader className="font-bold text-2xl">{t("public/sign-in:title")}</CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                            <FormField 
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t("public/sign-in:label.username")}
+                                            <span className="text-red-600">*</span>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input 
                                                 value={field.value}
                                                 onChange={field.onChange}
-                                                autoComplete="true"
                                             />
-                                            <InputGroupAddon 
-                                                align="inline-end"
-                                                onClick={() => setShowPassword(!showPassword)}
-                                            >
-                                                {showPassword ? <Eye /> : <EyeClosed />}
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                        >
-                            {t("common:button.signIn")}
-                        </Button>
-                    </form>
-                </Form>
-            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField 
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t("public/sign-in:label.password")}
+                                            <span className="text-red-600">*</span>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <InputGroup>
+                                                <InputGroupInput 
+                                                    type={showPassword ? "text" : "password"}
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    autoComplete="true"
+                                                />
+                                                <InputGroupAddon 
+                                                    align="inline-end"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                >
+                                                    {showPassword ? <Eye /> : <EyeClosed />}
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                {t("common:button.signIn")}
+                            </Button>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
         </div>
     );
 }

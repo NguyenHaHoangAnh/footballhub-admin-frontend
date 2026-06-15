@@ -179,7 +179,7 @@ export default function AreaForm({
                                     <Select
                                         key={field.value}
                                         disabled={mode === "view"}
-                                        value={field.value?.toString()}
+                                        value={field.value?.toString() || ""}
                                         onValueChange={(value: string) => {
                                             if (mode === "view") return;
                                             field.onChange(Number(value));

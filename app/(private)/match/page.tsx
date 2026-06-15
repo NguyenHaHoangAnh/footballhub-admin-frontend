@@ -11,16 +11,17 @@ import { MatchDto } from "@/app/types/match";
 import { useEffect, useMemo, useState } from "react";
 import { Mode } from "@/app/types/modal";
 import { toast } from "sonner";
-import AreaDialogCreate from "./area-dialog-create"
-import AreaDialogEdit from "./area-dialog-edit";
-import AreaDialogView from "./area-dialog-view"
-import AreaDialogDelete from "./area-dialog-delete";
+import MatchDialogCreate from "./match-dialog-create"
+import MatchDialogEdit from "./match-dialog-edit";
+import MatchDialogView from "./match-dialog-view"
+import MatchDialogDelete from "./match-dialog-delete";
 import { AxiosError } from "axios";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { findAll as findAllCompetitions } from "@/lib/api/competition";
 import { findByCompetitionId } from "@/lib/api/season";
 import { CompetitionDto } from "@/app/types/competition";
 import { SeasonDto } from "@/app/types/season";
+import { COMPETITION_TOTAL_MATCH_DAY } from "@/lib/constant";
 
 export default function Match() {
     const { t } = useTranslation(["common", "private/match"]);
@@ -38,7 +39,7 @@ export default function Match() {
     const { data } = useQuery({
         queryKey: ["findAllMatches", filter, sort, pagination],
         queryFn: () => findAll({
-            params: getParams(filter, sort, pagination)
+            params: getParams(filter, { ...sort, "matchId": { column: "matchId", value: "desc" } }, pagination)
         }),
     });
 
@@ -89,26 +90,36 @@ export default function Match() {
     }, [seasonData]);
 
     const getMatchDayList = useMemo(() => {
-        const yearList = [];
+        if (!getCompetitionList || !competitionId) return null;
+        const matchDayList = [];
         const start = 1;
-        const end = 38;
-        for (let year = start; year <= end; year++) {
-            yearList.push(year);
+        const competitionCode = getCompetitionList[competitionId].code || "";
+        const end = COMPETITION_TOTAL_MATCH_DAY[competitionCode] || 38;
+        for (let matchDay = start; matchDay <= end; matchDay++) {
+            matchDayList.push(matchDay);
         }
-        return yearList;
-    }, []);
+        return matchDayList;
+    }, [getCompetitionList, competitionId]);
 
     useEffect(() => {
-        if (!getCompetitionList || !getMatchDayList) return;
+        if (!getCompetitionList) return;
         const firstCompetitionId = Number(Object.keys(getCompetitionList)[0]);
         setCompetitionId(firstCompetitionId);
-        setMatchDay(getMatchDayList[0]);
-    }, [getCompetitionList, getMatchDayList]);
+    }, [getCompetitionList]);
 
     useEffect(()=> {
         if (!getSeasonList) return;
         setSeasonId(Number(Object.keys(getSeasonList)[0]));
     }, [getSeasonList]);
+
+    useEffect(() => {
+        if (!getMatchDayList) return;
+        if (matchDay > getMatchDayList[getMatchDayList.length - 1]) {
+            setMatchDay(getMatchDayList[getMatchDayList.length - 1]);
+            return;
+        }
+        // setMatchDay(getMatchDayList[0]);
+    }, [getMatchDayList]);
 
     const updateManuallyApi = useMutation({
         mutationKey: ["updateMatchManually"],
@@ -286,25 +297,25 @@ export default function Match() {
                 />
             </div>
 
-            <AreaDialogCreate
+            <MatchDialogCreate
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "create")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogView
+            <MatchDialogView
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "view")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogEdit 
+            <MatchDialogEdit 
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "edit")}
                 onOpenChange={onOpenModalChange}
                 mode={mode}
             />
-            <AreaDialogDelete 
+            <MatchDialogDelete 
                 selectedEtt={selectedEtt}
                 open={openModal && (mode === "delete")}
                 onOpenChange={onOpenModalChange}

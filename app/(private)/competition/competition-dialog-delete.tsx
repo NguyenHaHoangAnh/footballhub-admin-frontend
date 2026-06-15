@@ -26,7 +26,7 @@ export default function CompetitionDialogDelete({
     const queryClient = useQueryClient();
     const { filter, sort, pagination } = useCustomTable();
 
-    const deleteAreaApi = useMutation({
+    const deleteApi = useMutation({
         mutationKey: ["deleteArea"],
         mutationFn: (data: { id: number }) => del(data),
         onSuccess: () => {
@@ -56,7 +56,7 @@ export default function CompetitionDialogDelete({
 
     const handleSubmit = async () => {
         if (!selectedEtt) return;
-        deleteAreaApi.mutate({
+        deleteApi.mutate({
             id: selectedEtt.competitionId,
         });
     }
